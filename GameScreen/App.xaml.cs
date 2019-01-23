@@ -20,8 +20,7 @@ namespace GameScreen
 
             var container = builder.Build();
 
-            var viewModel = container.Resolve<MainWindowViewmodel>();
-            var window = new MainWindow { DataContext = viewModel };
+            var window = container.Resolve<MainWindow>();
             window.Show();
         }
     }

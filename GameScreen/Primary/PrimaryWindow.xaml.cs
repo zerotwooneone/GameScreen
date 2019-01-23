@@ -3,11 +3,11 @@
 namespace GameScreen.Primary
 {
     /// <summary>
-    /// Interaction logic for Primary.xaml
+    /// Interaction logic for PrimaryWindow.xaml
     /// </summary>
-    public partial class Primary : Window
+    public partial class PrimaryWindow : Window
     {
-        public Primary()
+        public PrimaryWindow()
         {
             InitializeComponent();
         }
