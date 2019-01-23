@@ -10,16 +10,26 @@ namespace GameScreen
     public class MainWindowViewmodel : INotifyPropertyChanged
     {
         private readonly Func<PrimaryWindow> _primaryWindowFactory;
+        private Lazy<PrimaryWindow> _primaryWindow;
 
         public MainWindowViewmodel(Func<PrimaryWindow> primaryWindowFactory)
         {
             _primaryWindowFactory = primaryWindowFactory;
-            TestCommand = new RelayCommand(obj=>true, obj =>
+            _primaryWindow = new Lazy<PrimaryWindow>(_primaryWindowFactory);
+            TestCommand = new RelayCommand(
+                obj => !_primaryWindow.IsValueCreated, 
+                obj =>
             {
-                var primary = _primaryWindowFactory();
-                primary.Show();
+                _primaryWindow.Value.Show();
+                _primaryWindow.Value.Closed += HandlePrimaryClosed;
             });
         }
+
+        private void HandlePrimaryClosed(object sender, EventArgs e)
+        {
+            _primaryWindow = new Lazy<PrimaryWindow>(_primaryWindowFactory);
+        }
+
         public ICommand TestCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
