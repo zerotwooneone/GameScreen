@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using Autofac;
 
 namespace GameScreen
 {
@@ -13,5 +8,23 @@ namespace GameScreen
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e) {
+            base.OnStartup(e);
+            var builder = new ContainerBuilder();
+
+            builder
+                .RegisterAssemblyTypes(typeof (MainWindow).Assembly)
+                .PublicOnly()
+                .AsImplementedInterfaces()
+                .AsSelf();
+
+            var container = builder.Build();
+
+            var viewModel = container.Resolve<MainWindowViewmodel>();
+            var window = new MainWindow { DataContext = viewModel };
+            window.Show();
+        }
     }
+
+
 }
