@@ -7,8 +7,9 @@ namespace GameScreen.Primary
     /// </summary>
     public partial class PrimaryWindow : Window
     {
-        public PrimaryWindow()
+        public PrimaryWindow(PrimaryViewmodel viewmodel)
         {
+            DataContext = viewmodel;
             InitializeComponent();
         }
     }
