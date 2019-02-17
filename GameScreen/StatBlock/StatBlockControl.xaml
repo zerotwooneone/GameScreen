@@ -9,14 +9,41 @@
              PresentationTraceSources.TraceLevel="High">
     <Expander>
         <Expander.Header>
-            <StackPanel Orientation="Horizontal">
+            <WrapPanel Orientation="Horizontal">
                 <Label Content="{Binding Name}"></Label>
-            </StackPanel>
+                <ItemsControl ItemsSource="{Binding Pinned}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <Label Content="{Binding Name}"></Label>
+                                <Label Content="{Binding Value}"></Label>
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </WrapPanel>
         </Expander.Header>
         <Expander.Content>
-            <StackPanel>
-                <Label Content="{Binding IsAlive}"></Label>
-            </StackPanel>
+            <ItemsControl ItemsSource="{Binding Stats}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel></StackPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <Label Content="{Binding Name}"></Label>
+                            <Label Content="{Binding Value}"></Label>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Expander.Content>
     </Expander>
     
