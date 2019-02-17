@@ -22,7 +22,6 @@ namespace GameScreen.Primary
                 }
             };
             var mobStatViewmodels = statDataModels.Select(Convert);
-            Stats = new ObservableCollection<MobStatViewmodel>();
             StatBlocks = new ObservableCollection<StatBlock.StatBlockViewmodel>();
             StatBlocks.Add(new StatBlock.StatBlockViewmodel(mobStatViewmodels)
             {
@@ -44,7 +43,6 @@ namespace GameScreen.Primary
         }
 
         public ObservableCollection<StatBlock.StatBlockViewmodel> StatBlocks { get; }
-        public ObservableCollection<MobStatViewmodel> Stats { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
