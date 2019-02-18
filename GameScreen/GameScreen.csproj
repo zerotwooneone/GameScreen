@@ -58,6 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Persistence\DummyPersistenceService.cs" />
+    <Compile Include="Persistence\IPersistenceService.cs" />
+    <Compile Include="MobStat\MobDatamodel.cs" />
+    <Compile Include="Persistence\PrimaryDatamodel.cs" />
     <Compile Include="Primary\IPositionable.cs" />
     <Compile Include="Primary\ISizable.cs" />
     <Compile Include="MobStat\MobStatViewmodel.cs" />

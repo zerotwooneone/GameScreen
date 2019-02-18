@@ -18,8 +18,13 @@ namespace GameScreen.StatBlock
         public string Name { get; set; }
         public ObservableCollection<MobStatViewmodel> Stats { get; }
 
-        public StatBlockViewmodel(IEnumerable<MobStatViewmodel> mobStats)
+        public StatBlockViewmodel(string name, IEnumerable<MobStatViewmodel> mobStats, double x, double y, double height, double width)
         {
+            Name = name;
+            X = x;
+            Y = y;
+            Height = height;
+            Width = width;
             Stats = new ObservableCollection<MobStatViewmodel>(mobStats);
             Pinned = new ObservableCollection<MobStatViewmodel>(mobStats.Where(s=>s.Pinned));
         }

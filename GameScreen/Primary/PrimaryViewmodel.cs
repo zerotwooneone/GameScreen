@@ -1,34 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GameScreen.Annotations;
 using GameScreen.MobStat;
+using GameScreen.Persistence;
+using GameScreen.StatBlock;
 
 namespace GameScreen.Primary
 {
     public class PrimaryViewmodel : INotifyPropertyChanged
     {
-        public PrimaryViewmodel()
+        public PrimaryViewmodel(IPersistenceService persistenceService)
         {
-            var statDataModels = new[]
-            {
-                new MobStatDatamodel
-                {
-                    Name = "Stat 1",
-                    Value = 1,
-                    Pinned = false
-                }
-            };
-            var mobStatViewmodels = statDataModels.Select(Convert);
-            StatBlocks = new ObservableCollection<StatBlock.StatBlockViewmodel>();
-            StatBlocks.Add(new StatBlock.StatBlockViewmodel(mobStatViewmodels)
-            {
-                Height = 100, Width = 100, X = 10, Y = 20, Name = "one"
-            });
-            StatBlocks.Add(new StatBlock.StatBlockViewmodel(new MobStatViewmodel[0])
-                {Height = 100, Width = 100, X = 150, Y = 120, Name = "two"});
+            var datamodel = persistenceService.Get();
+            StatBlocks = ConvertToStatBlocks(datamodel.Mobs);
+        }
+
+        private ObservableCollection<StatBlockViewmodel> ConvertToStatBlocks(IEnumerable<MobDatamodel> datamodelMobs)
+        {
+            var statViewModels = datamodelMobs.Select(ConvertToViewModel).ToList();
+            var blocks = new ObservableCollection<StatBlockViewmodel>(statViewModels);
+            return blocks;
+        }
+
+        private StatBlockViewmodel ConvertToViewModel(MobDatamodel mobDatamodel)
+        {
+            var statViewModels = mobDatamodel.MobStats.Select(Convert);
+            return new StatBlockViewmodel(mobDatamodel.Name, statViewModels, mobDatamodel.X, mobDatamodel.Y, mobDatamodel.Height, mobDatamodel.Width);
         }
 
         private MobStatViewmodel Convert(MobStatDatamodel arg)
@@ -42,7 +43,7 @@ namespace GameScreen.Primary
             return new MobStatViewmodel(datamodel.Name, datamodel.Pinned);
         }
 
-        public ObservableCollection<StatBlock.StatBlockViewmodel> StatBlocks { get; }
+        public ObservableCollection<StatBlockViewmodel> StatBlocks { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
