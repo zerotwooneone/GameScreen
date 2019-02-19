@@ -8,11 +8,13 @@ namespace GameScreen.MobStat
     {
         private string _name;
         private bool _pinned;
+        private int _value;
 
-        public MobStatViewmodel(string name, bool pinned)
+        public MobStatViewmodel(string name, bool pinned, int value)
         {
             _pinned = pinned;
             Name = name;
+            Value = value;
         }
 
         public string Name
@@ -22,6 +24,17 @@ namespace GameScreen.MobStat
             {
                 if (value == _name) return;
                 _name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int Value
+        {
+            get => _value;
+            set
+            {
+                if (value == _value) return;
+                _value = value;
                 OnPropertyChanged();
             }
         }

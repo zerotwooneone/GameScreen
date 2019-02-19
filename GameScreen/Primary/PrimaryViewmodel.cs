@@ -40,7 +40,7 @@ namespace GameScreen.Primary
 
         private MobStatViewmodel ConvertToStat(MobStatDatamodel datamodel)
         {
-            return new MobStatViewmodel(datamodel.Name, datamodel.Pinned);
+            return new MobStatViewmodel(datamodel.Name, datamodel.Pinned, datamodel.Value);
         }
 
         public ObservableCollection<StatBlockViewmodel> StatBlocks { get; }
