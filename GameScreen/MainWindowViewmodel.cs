@@ -1,9 +1,10 @@
-﻿using System;
+﻿using GameScreen.Annotations;
+using GameScreen.Primary;
+using GameScreen.WpfCommand;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using GameScreen.Annotations;
-using GameScreen.Primary;
 
 namespace GameScreen
 {
@@ -17,7 +18,7 @@ namespace GameScreen
             _primaryWindowFactory = primaryWindowFactory;
             _primaryWindow = new Lazy<PrimaryWindow>(_primaryWindowFactory);
             TestCommand = new RelayCommand(
-                obj => !_primaryWindow.IsValueCreated, 
+                obj => !_primaryWindow.IsValueCreated,
                 obj =>
             {
                 _primaryWindow.Value.Show();

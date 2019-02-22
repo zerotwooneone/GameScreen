@@ -1,4 +1,5 @@
 ﻿using GameScreen.MobStat;
+using System;
 
 namespace GameScreen.Persistence
 {
@@ -8,7 +9,8 @@ namespace GameScreen.Persistence
         {
             return new PrimaryDatamodel(new[]
             {
-                new MobDatamodel("mob 1", 
+                new MobDatamodel(Guid.Parse("221a84d1-29ea-44d8-b2c7-d2edc854795c"),
+                    "mob 1",
                     new[]
                     {
                         new MobStatDatamodel
@@ -26,8 +28,8 @@ namespace GameScreen.Persistence
                     },
                     100,
                     150,
-                    100,
-                    100)
+                    200,
+                    400)
             });
         }
     }

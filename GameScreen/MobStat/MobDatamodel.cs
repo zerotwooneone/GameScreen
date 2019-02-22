@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GameScreen.Primary;
+using System;
 using System.Collections.Generic;
-using GameScreen.Primary;
 
 namespace GameScreen.MobStat
 {
@@ -10,8 +10,9 @@ namespace GameScreen.MobStat
         public MobDatamodel()
         {
         }
-        public MobDatamodel(string name, IEnumerable<MobStatDatamodel> mobStats, double x, double y, double height, double width)
+        public MobDatamodel(Guid id, string name, IEnumerable<MobStatDatamodel> mobStats, double x, double y, double height, double width)
         {
+            Id = id;
             Name = name;
             MobStats = mobStats;
             X = x;
@@ -20,6 +21,7 @@ namespace GameScreen.MobStat
             Width = width;
         }
 
+        public Guid Id { get; }
         public string Name { get; }
         public IEnumerable<MobStatDatamodel> MobStats { get; set; }
         public double X { get; set; }

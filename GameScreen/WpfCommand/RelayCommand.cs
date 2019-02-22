@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace GameScreen
+namespace GameScreen.WpfCommand
 {
     public class RelayCommand : ICommand
     {

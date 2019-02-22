@@ -67,10 +67,10 @@
     <Compile Include="MobStat\MobStatViewmodel.cs" />
     <Compile Include="StatBlock\StatBlockViewmodel.cs" />
     <Compile Include="MobStat\MobStatDatamodel.cs" />
-    <Compile Include="RelayCommand.cs" />
     <Compile Include="StatBlock\StatBlockControl.xaml.cs">
       <DependentUpon>StatBlockControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WpfCommand\RelayCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
