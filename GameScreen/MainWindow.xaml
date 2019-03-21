@@ -18,5 +18,8 @@
         <Button Grid.Row="0"
                 Grid.Column="0"
                 Command="{Binding TestCommand}">Test</Button>
+        <Button Grid.Row="0"
+                Grid.Column="1"
+                Command="{Binding MongoCommand}">Mongo</Button>
     </Grid>
 </Window>
