@@ -1,6 +1,7 @@
 using System;
 using System.Reactive.Subjects;
 using GameScreen.Location;
+using GameScreen.MongoDb;
 using GameScreen.Navigation;
 using GameScreen.Node;
 using GameScreen.NodeWindow;
@@ -16,6 +17,8 @@ namespace GameScreenTests.NodeWindow
 
         private Mock<LocationViewmodel> mockLocationViewmodel;
         private Mock<INodeNavigationService> mockNodeNavigationService;
+        private Mock<ILocationService> _locationService;
+        private Mock<LocationViewmodel.Factory> _locationViewmodelFactory;
 
         [TestInitialize]
         public void TestInitialize()
@@ -24,6 +27,8 @@ namespace GameScreenTests.NodeWindow
 
             this.mockLocationViewmodel = this.mockRepository.Create<LocationViewmodel>();
             this.mockNodeNavigationService = this.mockRepository.Create<INodeNavigationService>();
+            _locationService = mockRepository.Create<ILocationService>();
+            _locationViewmodelFactory = mockRepository.Create<LocationViewmodel.Factory>();
         }
 
         [TestCleanup]
@@ -36,7 +41,9 @@ namespace GameScreenTests.NodeWindow
         {
             return new NodeWindowViewModel(
                 this.mockLocationViewmodel.Object,
-                this.mockNodeNavigationService.Object);
+                this.mockNodeNavigationService.Object,
+                _locationService.Object,
+                _locationViewmodelFactory.Object);
         }
 
         [TestMethod]

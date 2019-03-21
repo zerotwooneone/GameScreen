@@ -101,6 +101,9 @@
       <DependentUpon>LocationControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Location\LocationViewmodel.cs" />
+    <Compile Include="Location\ContextLocationService.cs" />
+    <Compile Include="MongoDb\IGameScreenContext.cs" />
+    <Compile Include="MongoDb\MongoGameScreenContext.cs" />
     <Compile Include="Navigation\INavigationParam.cs" />
     <Compile Include="Navigation\NavigationParam.cs" />
     <Compile Include="NodeHistory\HistoryNode.cs" />
@@ -108,6 +111,8 @@
     <Compile Include="NodeHistory\ListNodeHistoryAccessor.cs" />
     <Compile Include="NodeHistory\NodeHistoryModel.cs" />
     <Compile Include="NodeWindow\BindableBase.cs" />
+    <Compile Include="Location\ILocationService.cs" />
+    <Compile Include="Navigation\INavigationContext.cs" />
     <Compile Include="NodeWindow\NodeWindow.xaml.cs">
       <DependentUpon>NodeWindow.xaml</DependentUpon>
     </Compile>

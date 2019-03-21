@@ -16,7 +16,8 @@ namespace GameScreen.Node
         }
         public Task GotoLocation(string locationId)
         {
-            throw new NotImplementedException();
+            _navigationParamSubject.OnNext(new NavigationParam(locationId, false));
+            return Task.CompletedTask;
         }
 
         public IObservable<INavigationParam> NavigationObservable => _navigationParamSubject.AsObservable();

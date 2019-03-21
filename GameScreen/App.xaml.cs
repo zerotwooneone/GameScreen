@@ -1,8 +1,9 @@
-﻿using System.Reactive.Subjects;
-using System.Windows;
-using Autofac;
+﻿using Autofac;
 using GameScreen.Navigation;
 using GameScreen.Node;
+using MongoDB.Driver;
+using System.Reactive.Subjects;
+using System.Windows;
 
 namespace GameScreen
 {
@@ -11,23 +12,32 @@ namespace GameScreen
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e) {
+        protected override void OnStartup(StartupEventArgs e)
+        {
             base.OnStartup(e);
-            var builder = new ContainerBuilder();
-            
+            ContainerBuilder builder = new ContainerBuilder();
+
             builder
-                .RegisterAssemblyTypes(typeof (MainWindow).Assembly)
+                .RegisterAssemblyTypes(typeof(MainWindow).Assembly)
                 .PublicOnly()
                 .AsImplementedInterfaces()
                 .AsSelf();
 
             builder
                 .Register(c => new SubjectNodeNavigationService(new Subject<INavigationParam>()))
-                .As<INodeNavigationService>();    
+                .As<INodeNavigationService>();
 
-            var container = builder.Build();
+            builder
+                .Register(c => new MongoClient(new MongoClientSettings
+                {
+                    Server = new MongoServerAddress("localhost", 27017),
+                }))
+                .As<IMongoClient>()
+                .SingleInstance();
 
-            var window = container.Resolve<MainWindow>();
+            IContainer container = builder.Build();
+
+            MainWindow window = container.Resolve<MainWindow>();
             window.Show();
         }
     }

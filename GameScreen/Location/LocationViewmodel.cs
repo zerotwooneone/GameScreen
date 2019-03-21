@@ -14,6 +14,11 @@ namespace GameScreen.Location
         private readonly INodeNavigationService _nodeNavigationService;
         private string _name;
 
+        /// <summary>
+        /// Only for unit-testing
+        /// </summary>
+        protected LocationViewmodel(){}
+
         public LocationViewmodel(INodeHistoryAccessor nodeHistoryAccessor, 
             LocationModel location,
             INodeService nodeService,
