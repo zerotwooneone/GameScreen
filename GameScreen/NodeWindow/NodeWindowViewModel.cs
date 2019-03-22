@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
+using GameScreen.Dispatcher;
 using GameScreen.Location;
 using GameScreen.MongoDb;
 using GameScreen.Navigation;
@@ -14,40 +17,42 @@ namespace GameScreen.NodeWindow
         private readonly INodeNavigationService _nodeNavigationService;
         private readonly ILocationService _locationService;
         private readonly LocationViewmodel.Factory _locationViewmodelFactory;
+        private readonly DispatcherAccessor _dispatcherAccessor;
 
         public NodeWindowViewModel(LocationViewmodel locationViewModel,
             INodeNavigationService nodeNavigationService,
             ILocationService locationService,
-            LocationViewmodel.Factory locationViewmodelFactory)
+            LocationViewmodel.Factory locationViewmodelFactory,
+            DispatcherAccessor dispatcherAccessor)
         {
             _locationViewModel = locationViewModel;
             _nodeNavigationService = nodeNavigationService;
             _locationService = locationService;
             _locationViewmodelFactory = locationViewmodelFactory;
+            _dispatcherAccessor = dispatcherAccessor;
         }
 
-        //public override void OnInitialized(object sender, EventArgs e)
-        //{
-        //    IDisposable navigationSubscription = null;
-        //    navigationSubscription = _nodeNavigationService
-        //        .NavigationObservable
-        //        .Subscribe(async navigationParam =>
-        //        {
-        //            if (navigationParam.NewWindow)
-        //            {
-        //                //ignore
-        //            }
-        //            else
-        //            {
-        //                var location = await _nodeViewmodelFactory.GetLocation(navigationParam.LocationId);
-        //                Dispatcher.CurrentDispatcher.Invoke(()=>
-        //                {
-        //                    Location = location;
-        //                });
-        //                navigationSubscription.Dispose();
-        //            }
-        //        });
-        //}
+        public override void OnInitialized(object sender, EventArgs e)
+        {
+            IDisposable navigationSubscription = null;
+            navigationSubscription = _nodeNavigationService
+                .NavigationObservable
+                .Subscribe(async navigationParam =>
+                {
+                    if (navigationParam.NewWindow)
+                    {
+                        //ignore
+                    }
+                    else
+                    {
+                        var location = await _locationService.GetLocationById(navigationParam.LocationId);
+                        _dispatcherAccessor.Get().Invoke(() =>
+                        {
+                            Location = _locationViewmodelFactory.Invoke(location);
+                        });
+                    }
+                });
+        }
 
         public LocationViewmodel Location
         {

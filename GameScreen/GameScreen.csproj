@@ -96,6 +96,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\NullVisibilityConverter .cs" />
+    <Compile Include="Dispatcher\DispatcherAccessor.cs" />
+    <Compile Include="Dispatcher\DispatcherWrapper.cs" />
+    <Compile Include="Dispatcher\IDispatcher.cs" />
     <Compile Include="Location\LocationModel.cs" />
     <Compile Include="Location\LocationControl.xaml.cs">
       <DependentUpon>LocationControl.xaml</DependentUpon>
