@@ -79,7 +79,6 @@
     <Compile Include="Dispatcher\TestDispatcherAccessor.cs" />
     <Compile Include="NodeWindow\NodeWindowViewModelTests.cs" />
     <Compile Include="System\Windows\Visibility.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

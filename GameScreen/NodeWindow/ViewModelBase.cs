@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Windows.Input;
 
 namespace GameScreen.NodeWindow
 {
     public abstract class ViewModelBase : BindableBase
     {
-        public virtual void OnInitialized(object sender, EventArgs e)
-        {
-            
-        }
+        public virtual ICommand LoadedCommand => null;
     }
 }

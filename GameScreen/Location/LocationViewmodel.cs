@@ -1,7 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Windows.Input;
 using GameScreen.Node;
 using GameScreen.NodeHistory;
 using GameScreen.NodeWindow;
+using Microsoft.Expression.Interactivity.Core;
 
 namespace GameScreen.Location
 {
@@ -13,16 +14,20 @@ namespace GameScreen.Location
         private readonly INodeService _nodeService;
         private readonly INodeNavigationService _nodeNavigationService;
         private string _name;
+        private string _id;
+        public override ICommand LoadedCommand { get; }
 
         /// <summary>
         /// Only for unit-testing
         /// </summary>
-        protected LocationViewmodel(){}
+        protected LocationViewmodel()
+        {
+        }
 
         public LocationViewmodel(INodeHistoryAccessor nodeHistoryAccessor, 
             LocationModel location,
             INodeService nodeService,
-            INodeNavigationService nodeNavigationService)
+            INodeNavigationService nodeNavigationService):this()
         {
             _nodeHistoryAccessor = nodeHistoryAccessor;
             _location = location;
@@ -30,6 +35,9 @@ namespace GameScreen.Location
             _nodeNavigationService = nodeNavigationService;
 
             _name = location.Name;
+            _id = location.Id.ToString();
+
+            LoadedCommand = new ActionCommand(OnLoaded);
         }
 
         public string Name
@@ -38,9 +46,16 @@ namespace GameScreen.Location
             set => SetProperty(ref _name, value);
         }
 
-        //public override void OnInitialized(object sender, EventArgs e)
-        //{
-        //    _nodeService.GetChildLocationsByParentId()
-        //}
+        public string Id
+        {
+            get => _id;
+            protected set => SetProperty(ref _id, value);
+        }
+
+        private async void OnLoaded()
+        {
+            var x = await _nodeService.GetChildLocationsByParentId(Id, 10, 0);
+            int y = 9;
+        }
     }
 }

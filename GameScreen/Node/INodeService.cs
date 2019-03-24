@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using GameScreen.Location;
+﻿using GameScreen.Location;
+using System.Threading.Tasks;
 
 namespace GameScreen.Node
 {
     public interface INodeService
     {
-        Task<IPageable<LocationModel>> GetChildLocationsByParentId(string parentId, uint recursiveDepth = 1);
+        Task<IPageable<LocationModel>> GetChildLocationsByParentId(string parentId, int pageSize, int pageIndex, uint recursiveDepth = 1);
     }
 }

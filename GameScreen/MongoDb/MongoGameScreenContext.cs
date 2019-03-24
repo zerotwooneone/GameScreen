@@ -29,13 +29,16 @@ namespace GameScreen.MongoDb
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<LocationModel>> GetLocationsByParentId(string locationId)
+        public async Task<IEnumerable<LocationModel>> GetLocationsByParentId(string locationId, int pageSize, int pageIndex)
         {
             var query = Builders<LocationModel>
                 .Filter
                 .Eq("ParentLocationId", ObjectId.Parse(locationId));
+            var skips = pageSize * pageIndex;
             return await Locations
                 .Find(query)
+                .Skip(skips)
+                .Limit(pageSize)
                 .ToListAsync();
         }
     }

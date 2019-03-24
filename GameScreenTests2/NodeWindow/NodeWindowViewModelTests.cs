@@ -49,7 +49,7 @@ namespace GameScreenTests.NodeWindow
         }
 
         [TestMethod]
-        public void OnInitialized_WithLocationNavigation_ReplacesLocationAsync()
+        public void OnLoaded_WithLocationNavigation_ReplacesLocationAsync()
         {
             // Arrange
             var locationModel = new LocationModel();
@@ -66,14 +66,14 @@ namespace GameScreenTests.NodeWindow
                 .SetupInvokeAction();
 
             // Act
-            unitUnderTest.OnInitialized(unitUnderTest, EventArgs.Empty);
+            unitUnderTest.LoadedCommand.Execute(null);
             
             // Assert
             Assert.AreEqual(expected ,unitUnderTest.Location);
         }
 
         [TestMethod]
-        public void OnInitialized_WithNewWindowNavigation_LocationRemains()
+        public void OnLoaded_WithNewWindowNavigation_LocationRemains()
         {
             var unitUnderTest = this.CreateViewModel();
             var expected = unitUnderTest.Location;
@@ -83,7 +83,7 @@ namespace GameScreenTests.NodeWindow
                 .Returns(new BehaviorSubject<INavigationParam>(new NavigationParam(newLocationId, true)));
             
             // Act
-            unitUnderTest.OnInitialized(unitUnderTest, EventArgs.Empty);
+            unitUnderTest.LoadedCommand.Execute(null);
             
             // Assert
             Assert.AreEqual(expected ,unitUnderTest.Location);

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GameScreen.MongoDb;
 
 namespace GameScreen.Location
@@ -21,5 +22,11 @@ namespace GameScreen.Location
             //implement caching here?
             return _gameScreenContext.GetLocationById(locationId);
         }
+
+        //public Task<IEnumerable<LocationModel>> GetLocationByParentId(string locationId, int pageSize, int pageIndex)
+        //{
+        //    //implement caching here?
+        //    return _gameScreenContext.GetLocationsByParentId(locationId, pageSize, pageIndex);
+        //}
     }
 }

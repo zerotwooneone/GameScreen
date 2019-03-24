@@ -6,10 +6,19 @@
         xmlns:local="clr-namespace:GameScreen.NodeWindow"
         xmlns:location="clr-namespace:GameScreen.Location"
         xmlns:converters="clr-namespace:GameScreen.Converters"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="NodeWindow" Height="450" Width="800">
+    <Window.Resources>
+        <converters:NullVisibilityConverter x:Key="NullVisibilityConverter"></converters:NullVisibilityConverter>
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand, Mode=OneWay}"></i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <location:LocationControl DataContext="{Binding Location, Mode=OneWay}"
-                                  Visibility="{Binding LocationVisibility}"></location:LocationControl>
+                                  Visibility="{Binding Mode=OneWay, Converter={StaticResource NullVisibilityConverter}}"></location:LocationControl>
     </Grid>
 </Window>

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
+using System.Windows.Input;
 using GameScreen.Dispatcher;
 using GameScreen.Location;
-using GameScreen.MongoDb;
 using GameScreen.Navigation;
 using GameScreen.Node;
+using Microsoft.Expression.Interactivity.Core;
 
 namespace GameScreen.NodeWindow
 {
@@ -18,6 +17,7 @@ namespace GameScreen.NodeWindow
         private readonly ILocationService _locationService;
         private readonly LocationViewmodel.Factory _locationViewmodelFactory;
         private readonly DispatcherAccessor _dispatcherAccessor;
+        public override ICommand LoadedCommand { get; }
 
         public NodeWindowViewModel(LocationViewmodel locationViewModel,
             INodeNavigationService nodeNavigationService,
@@ -30,9 +30,10 @@ namespace GameScreen.NodeWindow
             _locationService = locationService;
             _locationViewmodelFactory = locationViewmodelFactory;
             _dispatcherAccessor = dispatcherAccessor;
+            LoadedCommand = new ActionCommand(OnLoaded);
         }
 
-        public override void OnInitialized(object sender, EventArgs e)
+        private void OnLoaded()
         {
             IDisposable navigationSubscription = null;
             navigationSubscription = _nodeNavigationService
@@ -57,16 +58,7 @@ namespace GameScreen.NodeWindow
         public LocationViewmodel Location
         {
             get => _locationViewModel;
-            protected set
-            {
-                SetProperty(ref _locationViewModel, value);
-                RaisePropertyChanged(nameof(LocationVisibility));
-            }
-        }
-
-        public Visibility LocationVisibility
-        {
-            get => Location == null ? Visibility.Collapsed : Visibility.Visible;
+            protected set => SetProperty(ref _locationViewModel, value);
         }
 
         public async Task GoToLocation(string locationId)

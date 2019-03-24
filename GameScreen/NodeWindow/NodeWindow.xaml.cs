@@ -19,12 +19,10 @@ namespace GameScreen.NodeWindow
     /// </summary>
     public partial class NodeWindow : Window
     {
-        private NodeWindowViewModel ViewModel => DataContext as NodeWindowViewModel;
         public NodeWindow(NodeWindowViewModel viewModel)
         {
             DataContext = viewModel;
             InitializeComponent();
-            this.Initialized += ViewModel.OnInitialized;
         }
     }
 }
