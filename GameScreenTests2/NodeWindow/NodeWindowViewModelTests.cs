@@ -1,9 +1,8 @@
-using System;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using GameScreen.Location;
 using GameScreen.Navigation;
 using GameScreen.Node;
+using GameScreen.NodeHistory;
 using GameScreen.NodeWindow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -15,7 +14,6 @@ namespace GameScreenTests.NodeWindow
     {
         private MockRepository mockRepository;
 
-        private Mock<LocationViewmodel> mockLocationViewmodel;
         private Mock<INodeNavigationService> mockNodeNavigationService;
         private Mock<ILocationService> _locationService;
         private TestDispatcherAccessor _dispatcherAccessor;
@@ -25,7 +23,6 @@ namespace GameScreenTests.NodeWindow
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockLocationViewmodel = this.mockRepository.Create<LocationViewmodel>();
             this.mockNodeNavigationService = this.mockRepository.Create<INodeNavigationService>();
             _locationService = mockRepository.Create<ILocationService>();
             _dispatcherAccessor = new TestDispatcherAccessor(mockRepository);
@@ -37,56 +34,70 @@ namespace GameScreenTests.NodeWindow
             this.mockRepository.VerifyAll();
         }
 
-        private NodeWindowViewModel CreateViewModel(LocationViewmodel.Factory locationViewmodelFactory = null)
+        private NodeWindowViewModel CreateViewModel(LocationModel locationModel = null,
+            LocationViewmodel.Factory locationViewmodelFactory = null,
+            NodeHistoryState nodeHistoryState = null)
         {
-            if(locationViewmodelFactory == null) locationViewmodelFactory = location => new LocationViewmodel(null, location, null, null);
+            if (locationViewmodelFactory == null) locationViewmodelFactory = (location, navContext) => new LocationViewmodel(location, null,null, navContext);
+            if (locationModel == null) locationModel = new LocationModel();
             return new NodeWindowViewModel(
-                this.mockLocationViewmodel.Object,
+                locationModel,
                 this.mockNodeNavigationService.Object,
                 _locationService.Object,
                 locationViewmodelFactory,
-                _dispatcherAccessor);
+                _dispatcherAccessor,
+                nodeHistoryState);
+        }
+
+        private INavigationContext CreateNavigationContext(LocationModel locationModel = null,
+        LocationViewmodel.Factory locationViewmodelFactory = null)
+        {
+            return CreateViewModel(locationModel, locationViewmodelFactory);
         }
 
         [TestMethod]
-        public void OnLoaded_WithLocationNavigation_ReplacesLocationAsync()
+        public async Task Title_AfterGotoLocation_ExpectedValue()
         {
             // Arrange
-            var locationModel = new LocationModel();
-            var expected = new LocationViewmodel(null, locationModel, null, null);
-            var unitUnderTest = this.CreateViewModel(location=>expected);
-            const string newLocationId = "5c9174b4a1effb00d8cba037";
-            mockNodeNavigationService
-                .Setup(mns => mns.NavigationObservable)
-                .Returns(new BehaviorSubject<INavigationParam>(new NavigationParam(newLocationId, false)));
+            const string expected = "expected";
+            var locationModel = new LocationModel{Name = "Initial"};
+            var viewmodel = new LocationViewmodel(locationModel, null, null, null);
+            var windowViewModel = this.CreateViewModel(locationModel: locationModel, locationViewmodelFactory: (location, navContext) => viewmodel);
+            var unitUnderTest = (INavigationContext) windowViewModel;
             _locationService
-                .Setup(ls => ls.GetLocationById(newLocationId))
-                .Returns(Task.FromResult(locationModel));
-            _dispatcherAccessor
-                .SetupInvokeAction();
+                .Setup(ls => ls.GetLocationById(It.IsAny<string>()))
+                .Returns(Task.FromResult(new LocationModel {Name = expected}));
 
             // Act
-            unitUnderTest.LoadedCommand.Execute(null);
-            
+            await unitUnderTest.GoToLocation("some location id");
+            var actual = windowViewModel.Title;
+
             // Assert
-            Assert.AreEqual(expected ,unitUnderTest.Location);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void OnLoaded_WithNewWindowNavigation_LocationRemains()
+        public void GoBack_HasBackHistory_LocationChanged()
         {
-            var unitUnderTest = this.CreateViewModel();
-            var expected = unitUnderTest.Location;
-            const string newLocationId = "5c9174b4a1effb00d8cba037";
-            mockNodeNavigationService
-                .Setup(mns => mns.NavigationObservable)
-                .Returns(new BehaviorSubject<INavigationParam>(new NavigationParam(newLocationId, true)));
-            
+            // Arrange
+            var locationModel = new LocationModel{Name = "Initial"};
+            var viewmodel = new LocationViewmodel(locationModel, null, null, null);
+            var nodeHistoryState = new NodeHistoryState(new HistoryNode(locationModel.Name, locationModel.Id.ToString()), 1, new []{new HistoryNode("back node", "back node id"), });
+            var unitUnderTest = this.CreateViewModel(locationModel: locationModel, locationViewmodelFactory: (location, navContext) => viewmodel,
+                nodeHistoryState: nodeHistoryState);
+            const string expected = "expected";
+            _locationService
+                .Setup(ls => ls.GetLocationById(It.IsAny<string>()))
+                .Returns(Task.FromResult(new LocationModel {Name = expected}));
+
             // Act
-            unitUnderTest.LoadedCommand.Execute(null);
-            
+            unitUnderTest
+                .BackCommand
+                .Execute(null);
+            var actual = unitUnderTest.Title;
+
             // Assert
-            Assert.AreEqual(expected ,unitUnderTest.Location);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

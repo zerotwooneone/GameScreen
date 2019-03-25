@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
+using GameScreen.Navigation;
 using GameScreen.Node;
-using GameScreen.NodeHistory;
 using GameScreen.NodeWindow;
 using Microsoft.Expression.Interactivity.Core;
 
@@ -8,14 +8,14 @@ namespace GameScreen.Location
 {
     public class LocationViewmodel: ViewModelBase
     {
-        public delegate LocationViewmodel Factory(LocationModel location);
-        private readonly INodeHistoryAccessor _nodeHistoryAccessor;
+        public delegate LocationViewmodel Factory(LocationModel location, INavigationContext navigationContext);
         private readonly LocationModel _location;
         private readonly INodeService _nodeService;
         private readonly INodeNavigationService _nodeNavigationService;
+        private readonly INavigationContext _navigationContext;
         private string _name;
         private string _id;
-        public override ICommand LoadedCommand { get; }
+        public ICommand LoadedCommand { get; }
 
         /// <summary>
         /// Only for unit-testing
@@ -24,15 +24,15 @@ namespace GameScreen.Location
         {
         }
 
-        public LocationViewmodel(INodeHistoryAccessor nodeHistoryAccessor, 
-            LocationModel location,
+        public LocationViewmodel(LocationModel location,
             INodeService nodeService,
-            INodeNavigationService nodeNavigationService):this()
+            INodeNavigationService nodeNavigationService,
+            INavigationContext navigationContext):this()
         {
-            _nodeHistoryAccessor = nodeHistoryAccessor;
             _location = location;
             _nodeService = nodeService;
             _nodeNavigationService = nodeNavigationService;
+            _navigationContext = navigationContext;
 
             _name = location.Name;
             _id = location.Id.ToString();

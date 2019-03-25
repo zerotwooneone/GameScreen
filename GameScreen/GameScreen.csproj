@@ -143,10 +143,9 @@
     <Compile Include="MongoDb\MongoGameScreenContext.cs" />
     <Compile Include="Navigation\INavigationParam.cs" />
     <Compile Include="Navigation\NavigationParam.cs" />
+    <Compile Include="NodeHistory\EnumerableExtensions.cs" />
     <Compile Include="NodeHistory\HistoryNode.cs" />
-    <Compile Include="NodeHistory\INodeHistoryAccessor.cs" />
-    <Compile Include="NodeHistory\ListNodeHistoryAccessor.cs" />
-    <Compile Include="NodeHistory\NodeHistoryModel.cs" />
+    <Compile Include="NodeHistory\NodeHistoryState.cs" />
     <Compile Include="NodeWindow\BindableBase.cs" />
     <Compile Include="Location\ILocationService.cs" />
     <Compile Include="Navigation\INavigationContext.cs" />
@@ -173,6 +172,11 @@
     <Compile Include="StatBlock\StatBlockControl.xaml.cs">
       <DependentUpon>StatBlockControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WpfCommand\AwaitableDelegateCommand.cs" />
+    <Compile Include="WpfCommand\DelegateCommand.cs" />
+    <Compile Include="WpfCommand\IAsyncCommand.cs" />
+    <Compile Include="WpfCommand\IRaiseCanExecuteChanged.cs" />
+    <Compile Include="WpfCommand\NotifyTaskCompletion.cs" />
     <Compile Include="WpfCommand\RelayCommand.cs" />
     <Page Include="Location\LocationControl.xaml">
       <SubType>Designer</SubType>

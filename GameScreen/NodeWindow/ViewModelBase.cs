@@ -1,10 +1,7 @@
-﻿using System;
-using System.Windows.Input;
-
-namespace GameScreen.NodeWindow
+﻿namespace GameScreen.NodeWindow
 {
     public abstract class ViewModelBase : BindableBase
     {
-        public virtual ICommand LoadedCommand => null;
+        //public virtual ICommand LoadedCommand => null;
     }
 }

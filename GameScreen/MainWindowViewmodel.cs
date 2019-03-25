@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GameScreen.Location;
 using GameScreen.Navigation;
+using GameScreen.NodeHistory;
 using GameScreen.NodeWindow;
 
 namespace GameScreen
 {
-    public class MainWindowViewmodel : INotifyPropertyChanged, INavigationContext
+    public class MainWindowViewmodel : ViewModelBase
     {
         private readonly Func<PrimaryWindow> _primaryWindowFactory;
         private readonly NodeWindowViewModel.LocationFactory _nodeWindowLocationFactory;
@@ -40,8 +41,10 @@ namespace GameScreen
             MongoCommand = new RelayCommand(param=>true, async param =>
             {
                 var locationModel = await _locationService.GetLocationById("5c9174b4a1effb00d8cba037");
-                var locationViewModel = _locationViewmodelFactory.Invoke(locationModel);
-                var windowViewModel = _nodeWindowLocationFactory.Invoke(locationViewModel);
+                //var locationViewModel = _locationViewmodelFactory.Invoke(locationModel);
+                var current = new HistoryNode(locationModel.Name, locationModel.Id.ToString());
+                var nodeHistoryState = new NodeHistoryState(current, 100);
+                var windowViewModel = _nodeWindowLocationFactory.Invoke(locationModel, nodeHistoryState);
                 var nodeWindow = new NodeWindow.NodeWindow(windowViewModel);
                 
                 nodeWindow.Show();
@@ -55,17 +58,6 @@ namespace GameScreen
 
         public ICommand TestCommand { get; }
         public ICommand MongoCommand { get; }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public Task GoToLocation(string locationId)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
