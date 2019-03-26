@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 
-namespace GameScreen.NodeWindow
+namespace GameScreen.Viewmodel
 {
     /// <summary>
     /// Implementation of <see cref="T:System.ComponentModel.INotifyPropertyChanged" /> to simplify models.

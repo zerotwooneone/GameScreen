@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace GameScreen.Node
+namespace GameScreen.Pageable
 {
     public interface IPageable<out T> : IEnumerable<T>
     {
-        int PageSize { get; }
         bool HasMore { get; }
     }
 }

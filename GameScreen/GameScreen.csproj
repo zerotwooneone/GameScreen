@@ -133,6 +133,7 @@
     <Compile Include="Dispatcher\DispatcherAccessor.cs" />
     <Compile Include="Dispatcher\DispatcherWrapper.cs" />
     <Compile Include="Dispatcher\IDispatcher.cs" />
+    <Compile Include="Location\LocationListItemViewmodel.cs" />
     <Compile Include="Location\LocationModel.cs" />
     <Compile Include="Location\LocationControl.xaml.cs">
       <DependentUpon>LocationControl.xaml</DependentUpon>
@@ -146,19 +147,20 @@
     <Compile Include="NodeHistory\EnumerableExtensions.cs" />
     <Compile Include="NodeHistory\HistoryNode.cs" />
     <Compile Include="NodeHistory\NodeHistoryState.cs" />
-    <Compile Include="NodeWindow\BindableBase.cs" />
+    <Compile Include="Pageable\PageableObservableCollection.cs" />
+    <Compile Include="Viewmodel\BindableBase.cs" />
     <Compile Include="Location\ILocationService.cs" />
     <Compile Include="Navigation\INavigationContext.cs" />
     <Compile Include="NodeWindow\NodeWindow.xaml.cs">
       <DependentUpon>NodeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="NodeWindow\NodeWindowViewModel.cs" />
-    <Compile Include="NodeWindow\ViewModelBase.cs" />
+    <Compile Include="Viewmodel\ViewModelBase.cs" />
     <Compile Include="Node\ContextNodeService.cs" />
     <Compile Include="Node\INodeNavigationService.cs" />
     <Compile Include="Node\INodeService.cs" />
-    <Compile Include="Node\IPageable.cs" />
-    <Compile Include="Node\PageableList.cs" />
+    <Compile Include="Pageable\IPageable.cs" />
+    <Compile Include="Pageable\PageableList.cs" />
     <Compile Include="Node\SubjectNodeNavigationService.cs" />
     <Compile Include="Persistence\DummyPersistenceService.cs" />
     <Compile Include="Persistence\IPersistenceService.cs" />

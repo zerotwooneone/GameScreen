@@ -1,15 +1,11 @@
-﻿using GameScreen.Annotations;
-using GameScreen.Primary;
+﻿using GameScreen.Primary;
 using GameScreen.WpfCommand;
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using GameScreen.Location;
-using GameScreen.Navigation;
 using GameScreen.NodeHistory;
 using GameScreen.NodeWindow;
+using GameScreen.Viewmodel;
 
 namespace GameScreen
 {

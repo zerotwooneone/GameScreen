@@ -1,4 +1,4 @@
-﻿namespace GameScreen.NodeWindow
+﻿namespace GameScreen.Viewmodel
 {
     public abstract class ViewModelBase : BindableBase
     {

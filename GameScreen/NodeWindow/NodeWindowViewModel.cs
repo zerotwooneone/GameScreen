@@ -7,6 +7,7 @@ using GameScreen.Location;
 using GameScreen.Navigation;
 using GameScreen.Node;
 using GameScreen.NodeHistory;
+using GameScreen.Viewmodel;
 using GameScreen.WpfCommand;
 
 namespace GameScreen.NodeWindow
@@ -83,7 +84,7 @@ namespace GameScreen.NodeWindow
 
         public async Task GoToLocation(string locationId)
         {
-            var locationModel = await _locationService.GetLocationById("5c9174b4a1effb00d8cba037");
+            var locationModel = await _locationService.GetLocationById(locationId);
             var locationViewModel = _locationViewmodelFactory.Invoke(locationModel, this);
             Location = locationViewModel;
             Title = locationModel.Name;

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GameScreen.Location;
 using GameScreen.MongoDb;
+using GameScreen.Pageable;
 
 namespace GameScreen.Node
 {
@@ -17,7 +18,7 @@ namespace GameScreen.Node
         {
             var locations = (await _gameScreenContext.GetLocationsByParentId(parentId, pageSize+1, pageIndex)).ToArray();
             var hasMore = locations.Length > pageSize;
-            var result = new PageableList<LocationModel>(locations.Take(pageSize),pageSize, hasMore);
+            var result = new PageableList<LocationModel>(locations.Take(pageSize), hasMore);
             return result;
         }
     }
