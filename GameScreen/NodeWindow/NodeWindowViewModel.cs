@@ -26,7 +26,6 @@ namespace GameScreen.NodeWindow
         public ICommand ForwardCommand { get; }
 
         private NodeHistoryState _nodeHistoryState;
-        //public override ICommand LoadedCommand { get; }
 
         public NodeWindowViewModel(LocationModel locationModel,
             INodeNavigationService nodeNavigationService,
@@ -40,7 +39,6 @@ namespace GameScreen.NodeWindow
             _locationService = locationService;
             _locationViewmodelFactory = locationViewmodelFactory;
             _dispatcherAccessor = dispatcherAccessor;
-            //LoadedCommand = new ActionCommand(OnLoaded);
 
             _title = locationModel.Name;
 
@@ -52,29 +50,6 @@ namespace GameScreen.NodeWindow
             });
             ForwardCommand = new AwaitableDelegateCommand(GoForward, ()=>_nodeHistoryState.ForwardNodes.Any());
         }
-
-        //private void OnLoaded()
-        //{
-        //    IDisposable navigationSubscription = null;
-        //    navigationSubscription = _nodeNavigationService
-        //        .NavigationObservable
-        //        .Subscribe(async navigationParam =>
-        //        {
-        //            if (navigationParam.NewWindow)
-        //            {
-        //                //ignore
-        //            }
-        //            else
-        //            {
-        //                var location = await _locationService.GetLocationById(navigationParam.LocationId);
-        //                _dispatcherAccessor.Get().Invoke(() =>
-        //                {
-        //                    Location = _locationViewmodelFactory.Invoke(location);
-        //                    Title = Location.Name;
-        //                });
-        //            }
-        //        });
-        //}
 
         public LocationViewmodel Location
         {
