@@ -22,13 +22,27 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0"
-            Orientation="Horizontal">
-            <Button Content="Back"
-                    Command="{Binding BackCommand}"></Button>
+        <DockPanel Grid.Row="0"
+            Dock="Right"
+            HorizontalAlignment="Right">
+            <Button Command="{Binding BackCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Path Fill="Aqua" Stroke="Red" Data="M 0,10 L 10,20, 10,0 0,10" >
+                                    </Path>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Margin" Value="5"></Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
             <Button Content="Forward"
                     Command="{Binding ForwardCommand}"></Button>
-        </StackPanel>
+        </DockPanel>
         <location:LocationControl DataContext="{Binding Location, Mode=OneWay}"
                                   Visibility="{Binding Mode=OneWay, Converter={StaticResource NullVisibilityConverter}}"
                                   Grid.Row="1"></location:LocationControl>
