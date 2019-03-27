@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace GameScreen.NodeWindow
 {
@@ -19,10 +7,25 @@ namespace GameScreen.NodeWindow
     /// </summary>
     public partial class NodeWindow : Window
     {
+        public delegate NodeWindow Factory(NodeWindowViewModel viewModel);
+        
+        /// <summary>
+        /// This only exists to support unit testing
+        /// </summary>
+        protected NodeWindow(){}
+
         public NodeWindow(NodeWindowViewModel viewModel)
         {
             DataContext = viewModel;
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// This only exists to support unit testing
+        /// </summary>
+        public new virtual void Show()
+        {
+            base.Show();
         }
     }
 }

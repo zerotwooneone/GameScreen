@@ -25,7 +25,8 @@ namespace GameScreen
 
             builder
                 .Register(c => new SubjectNodeNavigationService(new Subject<INavigationParam>()))
-                .As<INodeNavigationService>();
+                .As<INodeNavigationService>()
+                .SingleInstance();
 
             builder
                 .Register(c => new MongoClient(new MongoClientSettings

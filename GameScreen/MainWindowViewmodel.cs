@@ -1,11 +1,15 @@
 ﻿using GameScreen.Primary;
 using GameScreen.WpfCommand;
 using System;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GameScreen.Location;
+using GameScreen.Node;
 using GameScreen.NodeHistory;
 using GameScreen.NodeWindow;
 using GameScreen.Viewmodel;
+using Microsoft.Expression.Interactivity.Core;
 
 namespace GameScreen
 {
@@ -15,17 +19,24 @@ namespace GameScreen
         private readonly NodeWindowViewModel.LocationFactory _nodeWindowLocationFactory;
         private readonly LocationViewmodel.Factory _locationViewmodelFactory;
         private readonly ILocationService _locationService;
+        private readonly INodeNavigationService _nodeNavigationService;
+        private readonly NodeWindow.NodeWindow.Factory _nodeWindowFactory;
         private Lazy<PrimaryWindow> _primaryWindow;
+        public ICommand LoadedCommand { get; }
 
         public MainWindowViewmodel(Func<PrimaryWindow> primaryWindowFactory,
             NodeWindowViewModel.LocationFactory nodeWindowLocationFactory,
             LocationViewmodel.Factory locationViewmodelFactory,
-            ILocationService locationService)
+            ILocationService locationService,
+            INodeNavigationService nodeNavigationService,
+            NodeWindow.NodeWindow.Factory nodeWindowFactory)
         {
             _primaryWindowFactory = primaryWindowFactory;
             _nodeWindowLocationFactory = nodeWindowLocationFactory;
             _locationViewmodelFactory = locationViewmodelFactory;
             _locationService = locationService;
+            _nodeNavigationService = nodeNavigationService;
+            _nodeWindowFactory = nodeWindowFactory;
             _primaryWindow = new Lazy<PrimaryWindow>(_primaryWindowFactory);
             TestCommand = new RelayCommand(
                 obj => !_primaryWindow.IsValueCreated,
@@ -36,15 +47,34 @@ namespace GameScreen
             });
             MongoCommand = new RelayCommand(param=>true, async param =>
             {
-                var locationModel = await _locationService.GetLocationById("5c9174b4a1effb00d8cba037");
-                //var locationViewModel = _locationViewmodelFactory.Invoke(locationModel);
-                var current = new HistoryNode(locationModel.Name, locationModel.Id.ToString());
-                var nodeHistoryState = new NodeHistoryState(current, 100);
-                var windowViewModel = _nodeWindowLocationFactory.Invoke(locationModel, nodeHistoryState);
-                var nodeWindow = new NodeWindow.NodeWindow(windowViewModel);
-                
-                nodeWindow.Show();
+                var locationId = "5c9174b4a1effb00d8cba037";
+                await OpenNewLocationWindow(locationId);
             });
+            LoadedCommand = new ActionCommand(OnLoaded);
+        }
+
+        private async Task OpenNewLocationWindow(string locationId)
+        {
+            var locationModel = await _locationService.GetLocationById(locationId);
+            var current = new HistoryNode(locationModel.Name, locationModel.Id.ToString());
+            var nodeHistoryState = new NodeHistoryState(current, 100);
+            var windowViewModel = _nodeWindowLocationFactory.Invoke(locationModel, nodeHistoryState);
+            var nodeWindow = _nodeWindowFactory(windowViewModel);
+
+            nodeWindow.Show();
+        }
+
+        private void OnLoaded()
+        {
+            var navReplayable = _nodeNavigationService
+                .NavigationObservable
+                .SelectMany(async navigationParam =>
+                {
+                    await OpenNewLocationWindow(navigationParam.LocationId);
+                    return (string) null;
+                })
+                .Replay();
+            navReplayable.Connect();
         }
 
         private void HandlePrimaryClosed(object sender, EventArgs e)

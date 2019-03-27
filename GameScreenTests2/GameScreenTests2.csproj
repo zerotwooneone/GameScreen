@@ -55,6 +55,7 @@
       <HintPath>..\GameScreen\packages\Moq.4.10.1\lib\net45\Moq.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -81,6 +82,7 @@
     <Compile Include="Converters\NullVisibilityConverterTests.cs" />
     <Compile Include="Dispatcher\TestDispatcherAccessor.cs" />
     <Compile Include="Location\LocationViewmodelTests.cs" />
+    <Compile Include="MainWindowViewmodelTests.cs" />
     <Compile Include="NodeHistory\NodeHistoryStateTests.cs" />
     <Compile Include="NodeWindow\NodeWindowViewModelTests.cs" />
     <Compile Include="System\Windows\Visibility.cs" />
