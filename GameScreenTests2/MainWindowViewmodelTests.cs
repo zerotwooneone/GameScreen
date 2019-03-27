@@ -24,7 +24,7 @@ namespace GameScreenTests2
         private Mock<INodeNavigationService> mockNodeNavigationService;
         private Mock<NodeWindowViewModel.LocationFactory> _nodeWindowLocationFactory;
         private Mock<LocationViewmodel.Factory> _locationViewmodelFactory;
-        private Mock<NodeWindow.Factory> _nodeWindowFactory;
+        private Mock<IWindowService> _windowService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -37,7 +37,7 @@ namespace GameScreenTests2
 
             _nodeWindowLocationFactory = mockRepository.Create<NodeWindowViewModel.LocationFactory>();
             _locationViewmodelFactory = mockRepository.Create<LocationViewmodel.Factory>();
-            _nodeWindowFactory = mockRepository.Create<NodeWindow.Factory>();
+            _windowService = mockRepository.Create<IWindowService>();
         }
 
         [TestCleanup]
@@ -54,7 +54,7 @@ namespace GameScreenTests2
                 _locationViewmodelFactory.Object,
                 this.mockLocationService.Object,
                 this.mockNodeNavigationService.Object,
-                _nodeWindowFactory.Object);
+                _windowService.Object);
         }
 
         [TestMethod]
@@ -65,10 +65,9 @@ namespace GameScreenTests2
             mockNodeNavigationService
                 .SetupGet(nns => nns.NavigationObservable)
                 .Returns(new BehaviorSubject<INavigationParam>(new NavigationParam(null, true)));
-            var newNodeWindow = mockRepository.Create<NodeWindow>();
-            _nodeWindowFactory
-                .Setup(wlf => wlf(It.IsAny<NodeWindowViewModel>()))
-                .Returns(newNodeWindow.Object);
+            _windowService
+                .Setup(ws => ws.OpenNewNode(It.IsAny<NodeWindowViewModel>()))
+                .Returns(Task.CompletedTask);
             var newLocationModel = new LocationModel
             {
                 Name = "something",
@@ -77,9 +76,10 @@ namespace GameScreenTests2
             mockLocationService
                 .Setup(ls => ls.GetLocationById(It.IsAny<string>()))
                 .Returns(Task.FromResult(newLocationModel));
+            var expected = new NodeWindowViewModel(newLocationModel, null, null, (x,y)=>null, null, null);
             _nodeWindowLocationFactory
                 .Setup(lvf => lvf(It.IsAny<LocationModel>(), It.IsAny<NodeHistoryState>()))
-                .Returns(new NodeWindowViewModel(newLocationModel, null, null, (x,y)=>null, null, null));
+                .Returns(expected);
 
             // Act
             unitUnderTest
@@ -87,7 +87,8 @@ namespace GameScreenTests2
                 .Execute(null);
 
             // Assert
-            newNodeWindow.Verify(nw=>nw.Show());
+            _windowService
+                .Verify(ws => ws.OpenNewNode(expected));
         }
     }
 }

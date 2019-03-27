@@ -147,6 +147,8 @@
     <Compile Include="NodeHistory\EnumerableExtensions.cs" />
     <Compile Include="NodeHistory\HistoryNode.cs" />
     <Compile Include="NodeHistory\NodeHistoryState.cs" />
+    <Compile Include="NodeWindow\DataContextWindowService.cs" />
+    <Compile Include="NodeWindow\IWindowService.cs" />
     <Compile Include="Pageable\PageableObservableCollection.cs" />
     <Compile Include="Viewmodel\BindableBase.cs" />
     <Compile Include="Location\ILocationService.cs" />

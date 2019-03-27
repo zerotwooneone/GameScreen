@@ -20,7 +20,7 @@ namespace GameScreen
         private readonly LocationViewmodel.Factory _locationViewmodelFactory;
         private readonly ILocationService _locationService;
         private readonly INodeNavigationService _nodeNavigationService;
-        private readonly NodeWindow.NodeWindow.Factory _nodeWindowFactory;
+        private readonly IWindowService _windowService;
         private Lazy<PrimaryWindow> _primaryWindow;
         public ICommand LoadedCommand { get; }
 
@@ -29,14 +29,14 @@ namespace GameScreen
             LocationViewmodel.Factory locationViewmodelFactory,
             ILocationService locationService,
             INodeNavigationService nodeNavigationService,
-            NodeWindow.NodeWindow.Factory nodeWindowFactory)
+            IWindowService windowService)
         {
             _primaryWindowFactory = primaryWindowFactory;
             _nodeWindowLocationFactory = nodeWindowLocationFactory;
             _locationViewmodelFactory = locationViewmodelFactory;
             _locationService = locationService;
             _nodeNavigationService = nodeNavigationService;
-            _nodeWindowFactory = nodeWindowFactory;
+            _windowService = windowService;
             _primaryWindow = new Lazy<PrimaryWindow>(_primaryWindowFactory);
             TestCommand = new RelayCommand(
                 obj => !_primaryWindow.IsValueCreated,
@@ -59,9 +59,7 @@ namespace GameScreen
             var current = new HistoryNode(locationModel.Name, locationModel.Id.ToString());
             var nodeHistoryState = new NodeHistoryState(current, 100);
             var windowViewModel = _nodeWindowLocationFactory.Invoke(locationModel, nodeHistoryState);
-            var nodeWindow = _nodeWindowFactory(windowViewModel);
-
-            nodeWindow.Show();
+            await _windowService.OpenNewNode(windowViewModel);
         }
 
         private void OnLoaded()
