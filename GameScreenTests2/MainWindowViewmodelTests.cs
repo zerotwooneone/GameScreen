@@ -1,10 +1,8 @@
 using GameScreen;
 using GameScreen.Location;
 using GameScreen.Node;
-using GameScreen.Primary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using GameScreen.Navigation;
@@ -19,7 +17,6 @@ namespace GameScreenTests2
     {
         private MockRepository mockRepository;
 
-        private Mock<Func<PrimaryWindow>> mockFunc;
         private Mock<ILocationService> mockLocationService;
         private Mock<INodeNavigationService> mockNodeNavigationService;
         private Mock<NodeWindowViewModel.LocationFactory> _nodeWindowLocationFactory;
@@ -31,7 +28,6 @@ namespace GameScreenTests2
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockFunc = this.mockRepository.Create<Func<PrimaryWindow>>();
             this.mockLocationService = this.mockRepository.Create<ILocationService>();
             this.mockNodeNavigationService = this.mockRepository.Create<INodeNavigationService>();
 
@@ -49,7 +45,6 @@ namespace GameScreenTests2
         private MainWindowViewmodel CreateMainWindowViewmodel()
         {
             return new MainWindowViewmodel(
-                this.mockFunc.Object,
                 _nodeWindowLocationFactory.Object,
                 _locationViewmodelFactory.Object,
                 this.mockLocationService.Object,

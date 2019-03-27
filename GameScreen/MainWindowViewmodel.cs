@@ -1,6 +1,4 @@
-﻿using GameScreen.Primary;
-using GameScreen.WpfCommand;
-using System;
+﻿using GameScreen.WpfCommand;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -15,36 +13,25 @@ namespace GameScreen
 {
     public class MainWindowViewmodel : ViewModelBase
     {
-        private readonly Func<PrimaryWindow> _primaryWindowFactory;
         private readonly NodeWindowViewModel.LocationFactory _nodeWindowLocationFactory;
         private readonly LocationViewmodel.Factory _locationViewmodelFactory;
         private readonly ILocationService _locationService;
         private readonly INodeNavigationService _nodeNavigationService;
         private readonly IWindowService _windowService;
-        private Lazy<PrimaryWindow> _primaryWindow;
         public ICommand LoadedCommand { get; }
 
-        public MainWindowViewmodel(Func<PrimaryWindow> primaryWindowFactory,
+        public MainWindowViewmodel(
             NodeWindowViewModel.LocationFactory nodeWindowLocationFactory,
             LocationViewmodel.Factory locationViewmodelFactory,
             ILocationService locationService,
             INodeNavigationService nodeNavigationService,
             IWindowService windowService)
         {
-            _primaryWindowFactory = primaryWindowFactory;
             _nodeWindowLocationFactory = nodeWindowLocationFactory;
             _locationViewmodelFactory = locationViewmodelFactory;
             _locationService = locationService;
             _nodeNavigationService = nodeNavigationService;
             _windowService = windowService;
-            _primaryWindow = new Lazy<PrimaryWindow>(_primaryWindowFactory);
-            TestCommand = new RelayCommand(
-                obj => !_primaryWindow.IsValueCreated,
-                obj =>
-            {
-                _primaryWindow.Value.Show();
-                _primaryWindow.Value.Closed += HandlePrimaryClosed;
-            });
             MongoCommand = new RelayCommand(param=>true, async param =>
             {
                 var locationId = "5c9174b4a1effb00d8cba037";
@@ -74,13 +61,6 @@ namespace GameScreen
                 .Replay();
             navReplayable.Connect();
         }
-
-        private void HandlePrimaryClosed(object sender, EventArgs e)
-        {
-            _primaryWindow = new Lazy<PrimaryWindow>(_primaryWindowFactory);
-        }
-
-        public ICommand TestCommand { get; }
         public ICommand MongoCommand { get; }
         
     }

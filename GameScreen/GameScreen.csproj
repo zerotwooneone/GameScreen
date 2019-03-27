@@ -164,18 +164,6 @@
     <Compile Include="Pageable\IPageable.cs" />
     <Compile Include="Pageable\PageableList.cs" />
     <Compile Include="Node\SubjectNodeNavigationService.cs" />
-    <Compile Include="Persistence\DummyPersistenceService.cs" />
-    <Compile Include="Persistence\IPersistenceService.cs" />
-    <Compile Include="MobStat\MobDatamodel.cs" />
-    <Compile Include="Persistence\PrimaryDatamodel.cs" />
-    <Compile Include="Primary\IPositionable.cs" />
-    <Compile Include="Primary\ISizable.cs" />
-    <Compile Include="MobStat\MobStatViewmodel.cs" />
-    <Compile Include="StatBlock\StatBlockViewmodel.cs" />
-    <Compile Include="MobStat\MobStatDatamodel.cs" />
-    <Compile Include="StatBlock\StatBlockControl.xaml.cs">
-      <DependentUpon>StatBlockControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WpfCommand\AwaitableDelegateCommand.cs" />
     <Compile Include="WpfCommand\DelegateCommand.cs" />
     <Compile Include="WpfCommand\IAsyncCommand.cs" />
@@ -202,21 +190,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Primary\PrimaryWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="StatBlock\StatBlockControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewmodel.cs" />
-    <Compile Include="Primary\PrimaryWindow.xaml.cs">
-      <DependentUpon>PrimaryWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Primary\PrimaryViewmodel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
