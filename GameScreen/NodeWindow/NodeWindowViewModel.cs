@@ -76,6 +76,12 @@ namespace GameScreen.NodeWindow
             //var locationModel = await _locationService.GetLocationById(locationId);
             var locationViewModel = _locationViewmodelFactory.Invoke(locationModel, this);
             Location = locationViewModel;
+
+            //this is a dirty hack
+            Location
+                .LoadedCommand
+                .Execute(null);
+
             Title = locationModel.Name;
 
             _nodeHistoryState = newHistoryState;
