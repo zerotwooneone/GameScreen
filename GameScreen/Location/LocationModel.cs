@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using MongoDB.Bson;
 
 namespace GameScreen.Location
 {
@@ -6,8 +7,8 @@ namespace GameScreen.Location
     {
         public ObjectId Id { get; set; }
         public string Name { get; set; }
-        public ObjectId? ParentLocationId { get; set; }
         public string DmMapUrl { get; set; }
         public string PlayerMapUrl { get; set; }
+        public List<ObjectId> RelatedLocation { get; set; }
     }
 }

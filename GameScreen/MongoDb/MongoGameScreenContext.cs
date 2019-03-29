@@ -31,15 +31,28 @@ namespace GameScreen.MongoDb
 
         public async Task<IEnumerable<LocationModel>> GetLocationsByParentId(string locationId, int pageSize, int pageIndex)
         {
-            var query = Builders<LocationModel>
+            //var targetId = ObjectId.Parse(locationId);
+            //var filterDefinition = Builders<LocationModel>
+            //    .Filter
+            //    .ElemMatch(lm=>lm.RelatedLocation, relatedLocationId=>relatedLocationId == targetId);
+            //var skips = pageSize * pageIndex;
+            //return await Locations
+            //    .Find(filterDefinition)
+            //    .Skip(skips)
+            //    .Limit(pageSize)
+            //    .ToListAsync();
+
+            var targetIds = new[]{ ObjectId.Parse(locationId)};
+            var filterDefinition = Builders<LocationModel>
                 .Filter
-                .Eq("ParentLocationId", ObjectId.Parse(locationId));
+                .AnyIn(lm => lm.RelatedLocation, targetIds);
             var skips = pageSize * pageIndex;
             return await Locations
-                .Find(query)
+                .Find(filterDefinition)
                 .Skip(skips)
                 .Limit(pageSize)
                 .ToListAsync();
+
         }
     }
 }

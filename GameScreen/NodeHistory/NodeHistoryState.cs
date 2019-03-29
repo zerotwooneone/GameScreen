@@ -51,14 +51,17 @@ namespace GameScreen.NodeHistory
 
         public virtual NodeHistoryState GoBackTo(HistoryNode historyNode)
         {
-            while (true)
+            const int maxBackAttempts=1000;
+            NodeHistoryState result = null;
+            for (int i = 0; i < maxBackAttempts; i++)
             {
-                var result = GoBack();
+                result = GoBack();
                 if (historyNode.Equals(result.Current))
                 {
                     return result;
                 }
             }
+            throw new Exception("the history node was not found");
         }
     }
 }
