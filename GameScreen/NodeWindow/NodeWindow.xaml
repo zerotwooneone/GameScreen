@@ -64,7 +64,21 @@
                 </Button.Style>
             </Button>
             <Button Content="Forward"
-                    Command="{Binding ForwardCommand}"></Button>
+                    Command="{Binding ForwardCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Path Fill="Aqua" Stroke="Red" Data="M 0,0 L 0,20, 10,10 0,0" >
+                                    </Path>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Margin" Value="5"></Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
         </DockPanel>
         <location:LocationControl DataContext="{Binding Location, Mode=OneWay}"
                                   Visibility="{Binding Mode=OneWay, Converter={StaticResource NullVisibilityConverter}}"
