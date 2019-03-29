@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GameScreen.BreadCrumb;
 using GameScreen.Dispatcher;
 using GameScreen.Location;
 using GameScreen.Navigation;
@@ -26,13 +29,15 @@ namespace GameScreen.NodeWindow
         public ICommand ForwardCommand { get; }
 
         private NodeHistoryState _nodeHistoryState;
+        private readonly BreadCrumbViewmodel.Factory _breadCrumbViewmodelFactory;
 
         public NodeWindowViewModel(LocationModel locationModel,
             INodeNavigationService nodeNavigationService,
             ILocationService locationService,
             LocationViewmodel.Factory locationViewmodelFactory,
             DispatcherAccessor dispatcherAccessor,
-            NodeHistoryState nodeHistoryState)
+            NodeHistoryState nodeHistoryState,
+            BreadCrumbViewmodel.Factory breadCrumbViewmodelFactory)
         {
             _locationViewModel = locationViewmodelFactory(locationModel, this);
             _nodeNavigationService = nodeNavigationService;
@@ -43,12 +48,52 @@ namespace GameScreen.NodeWindow
             _title = locationModel.Name;
 
             _nodeHistoryState = nodeHistoryState;
+            _breadCrumbViewmodelFactory = breadCrumbViewmodelFactory;
 
-            BackCommand = new AwaitableDelegateCommand(GoBack, ()=>
+            BackCommand = new AwaitableDelegateCommand(GoBack, ()=> BackAvailable);
+            ForwardCommand = new AwaitableDelegateCommand(GoForward, ()=> ForwardAvailable);
+            var breadCrumbs = ConvertToBreadCrumbs(_nodeHistoryState);
+            BreadCrumbs = new ObservableCollection<BreadCrumbViewmodel>(breadCrumbs);
+        }
+
+        private IEnumerable<BreadCrumbViewmodel> ConvertToBreadCrumbs(NodeHistoryState nodeHistoryState)
+        {
+            foreach (var historyNode in nodeHistoryState.BackNodes)
             {
-                return _nodeHistoryState.BackNodes.Any();
-            });
-            ForwardCommand = new AwaitableDelegateCommand(GoForward, ()=>_nodeHistoryState.ForwardNodes.Any());
+                async void OnClicked()
+                {
+                    var newHistoryState = nodeHistoryState.GoBackTo(historyNode);
+                    var locationModel = await _locationService.GetLocationById(historyNode.LocationId);
+                    await GoToLocation(locationModel, newHistoryState);
+                }
+
+                yield return _breadCrumbViewmodelFactory(historyNode.NodeName, OnClicked);
+            }
+        }
+
+        private async Task GoToLocation(LocationModel locationModel, NodeHistoryState newHistoryState)
+        {
+            //var locationModel = await _locationService.GetLocationById(locationId);
+            var locationViewModel = _locationViewmodelFactory.Invoke(locationModel, this);
+            Location = locationViewModel;
+            Title = locationModel.Name;
+
+            _nodeHistoryState = newHistoryState;
+
+            UpdateBreadkCrumbs();
+
+            ((IRaiseCanExecuteChanged)BackCommand).RaiseCanExecuteChanged();
+            ((IRaiseCanExecuteChanged)ForwardCommand).RaiseCanExecuteChanged();
+        }
+
+        private void UpdateBreadkCrumbs()
+        {
+            BreadCrumbs.Clear();
+            var breakCrumbs = ConvertToBreadCrumbs(_nodeHistoryState);
+            foreach (var breadCrumbViewmodel in breakCrumbs)
+            {
+                BreadCrumbs.Add(breadCrumbViewmodel);
+            }
         }
 
         public LocationViewmodel Location
@@ -60,9 +105,16 @@ namespace GameScreen.NodeWindow
         public async Task GoToLocation(string locationId)
         {
             var locationModel = await _locationService.GetLocationById(locationId);
-            var locationViewModel = _locationViewmodelFactory.Invoke(locationModel, this);
-            Location = locationViewModel;
-            Title = locationModel.Name;
+            //var locationViewModel = _locationViewmodelFactory.Invoke(locationModel, this);
+            //Location = locationViewModel;
+            //Title = locationModel.Name;
+
+            var historyNode = new HistoryNode(locationModel.Name, locationId);
+            var newHistoryState = _nodeHistoryState.Append(historyNode);
+
+            //((IRaiseCanExecuteChanged)BackCommand).RaiseCanExecuteChanged();
+            //((IRaiseCanExecuteChanged)ForwardCommand).RaiseCanExecuteChanged();
+            await GoToLocation(locationModel, newHistoryState);
         }
 
         public async Task GoBack()
@@ -77,12 +129,14 @@ namespace GameScreen.NodeWindow
             throw new NotImplementedException();
         }
 
-        bool INavigationContext.ForwardAvailable { get; }
+        public bool ForwardAvailable { get; }
 
         public string Title
         {
             get => _title;
             set => SetProperty(ref _title, value);
         }
+
+        public ObservableCollection<BreadCrumbViewmodel> BreadCrumbs { get; }
     }
 }

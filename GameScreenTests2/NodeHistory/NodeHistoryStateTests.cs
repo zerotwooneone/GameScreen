@@ -166,5 +166,50 @@ namespace GameScreenTests2.NodeHistory
         //    // Assert
         //    Assert.Fail();
         //}
+
+        [TestMethod]
+        public void GoBackTo_OneBack_CurrentBecomesForward()
+        {
+            // Arrange
+            const string expected = "First";
+            var backNode = new HistoryNode("back node", "back location");
+            var unitUnderTest = new NodeHistoryState(
+                new HistoryNode(expected, "location1"), 
+                1,
+                new []{backNode, },
+                null);
+
+            // Act
+            var actual = unitUnderTest
+                .GoBackTo(backNode)
+                .ForwardNodes
+                .First()
+                .NodeName;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GoBackTo_OneBack_CurrentSet()
+        {
+            // Arrange
+            const string expected = "back node";
+            var backNode = new HistoryNode(expected, "back location");
+            var unitUnderTest = new NodeHistoryState(
+                new HistoryNode("First", "location1"), 
+                1,
+                new []{backNode, },
+                null);
+            
+            // Act
+            var actual = unitUnderTest
+                .GoBackTo(backNode)
+                .Current
+                .NodeName;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

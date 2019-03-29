@@ -71,7 +71,8 @@ namespace GameScreenTests2
             mockLocationService
                 .Setup(ls => ls.GetLocationById(It.IsAny<string>()))
                 .Returns(Task.FromResult(newLocationModel));
-            var expected = new NodeWindowViewModel(newLocationModel, null, null, (x,y)=>null, null, null);
+            var expected = new NodeWindowViewModel(newLocationModel, null, null, 
+                (x,y)=>null, null, new NodeHistoryState(new HistoryNode("some name", "some id"),10 ), null);
             _nodeWindowLocationFactory
                 .Setup(lvf => lvf(It.IsAny<LocationModel>(), It.IsAny<NodeHistoryState>()))
                 .Returns(expected);

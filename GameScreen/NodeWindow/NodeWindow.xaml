@@ -15,7 +15,37 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ItemsControl ItemsSource="{Binding BreadCrumbs}"
+                      Grid.Row="0"
+                      Grid.Column="0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                Height="20"></StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Viewbox >
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock >
+                                <Hyperlink
+                                       Command="{Binding ClickCommand}">
+                                    <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                                </Hyperlink>
+                            &gt;
+                            </TextBlock>
+                        </StackPanel>
+                    </Viewbox>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <DockPanel Grid.Row="0"
+                   Grid.Column="1"
             Dock="Right"
             HorizontalAlignment="Right">
             <Button Command="{Binding BackCommand}">
@@ -38,6 +68,7 @@
         </DockPanel>
         <location:LocationControl DataContext="{Binding Location, Mode=OneWay}"
                                   Visibility="{Binding Mode=OneWay, Converter={StaticResource NullVisibilityConverter}}"
-                                  Grid.Row="1"></location:LocationControl>
+                                  Grid.Row="1"
+                                  Grid.ColumnSpan="2"></location:LocationControl>
     </Grid>
 </Window>

@@ -129,6 +129,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BreadCrumb\BreadCrumbViewmodel.cs" />
     <Compile Include="Converters\NullVisibilityConverter .cs" />
     <Compile Include="Dispatcher\DispatcherAccessor.cs" />
     <Compile Include="Dispatcher\DispatcherWrapper.cs" />

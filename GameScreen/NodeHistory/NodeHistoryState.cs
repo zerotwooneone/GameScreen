@@ -48,5 +48,17 @@ namespace GameScreen.NodeHistory
             var backNodes = BackNodes.Append(Current);
             return new NodeHistoryState(current, _maxHistoryNodes, backNodes, newForwardNodes);
         }
+
+        public virtual NodeHistoryState GoBackTo(HistoryNode historyNode)
+        {
+            while (true)
+            {
+                var result = GoBack();
+                if (historyNode.Equals(result.Current))
+                {
+                    return result;
+                }
+            }
+        }
     }
 }
