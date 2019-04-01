@@ -13,21 +13,25 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding Name, Mode=OneWay}"
-                   Grid.Row="0"></TextBlock>
+        <WrapPanel Grid.Row="0">
+            <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="14" FontWeight="Bold">
+            </TextBlock></WrapPanel>
         <ItemsControl ItemsSource="{Binding Locations}"
                       Grid.Row="1">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}"></TextBlock>
+                        <TextBlock Text="{Binding Name}" 
+                                   Margin="5"></TextBlock>
                         <Button Content="Switch"
-                                Command="{Binding SwitchToCommand}"></Button>
+                                Command="{Binding SwitchToCommand}" 
+                                Margin="5"></Button>
                         <Button Content="Open New"
-                                Command="{Binding OpenNewCommand}"></Button>
+                                Command="{Binding OpenNewCommand}"
+                                Margin="5"></Button>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
