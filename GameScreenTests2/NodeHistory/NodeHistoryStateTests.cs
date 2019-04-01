@@ -211,5 +211,27 @@ namespace GameScreenTests2.NodeHistory
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void GoBackTo_TwoBack_CurrentSet()
+        {
+            // Arrange
+            const string expected = "back node";
+            var backNode = new HistoryNode(expected, "back location");
+            var unitUnderTest = new NodeHistoryState(
+                new HistoryNode("First", "location1"), 
+                1,
+                new []{backNode, new HistoryNode("some other node","some other location id"),  },
+                null);
+            
+            // Act
+            var actual = unitUnderTest
+                .GoBackTo(backNode)
+                .Current
+                .NodeName;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
