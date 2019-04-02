@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using System.Windows;
+using GameScreen.Location;
 
 namespace GameScreen.NodeWindow
 {
@@ -13,6 +15,17 @@ namespace GameScreen.NodeWindow
 
             window.Show();
             return Task.CompletedTask;
+        }
+
+        public void OpenNewLocationPopup(NewLocationViewmodel newLocationViewmodel, Window popupContext)
+        {
+            popupContext.DataContext = newLocationViewmodel;
+            popupContext.ShowDialog();
+        }
+
+        public Window GetNewLocationPopup()
+        {
+            return new NewLocationWindow();
         }
     }
 }

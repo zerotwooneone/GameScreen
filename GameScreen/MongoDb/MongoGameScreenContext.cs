@@ -54,5 +54,10 @@ namespace GameScreen.MongoDb
                 .ToListAsync();
 
         }
+
+        public async Task AddLocations(IEnumerable<LocationModel> locationModels)
+        {
+            await Locations.InsertManyAsync(locationModels);
+        }
     }
 }

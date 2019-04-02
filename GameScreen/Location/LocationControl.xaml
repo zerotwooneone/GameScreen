@@ -19,22 +19,43 @@
         <WrapPanel Grid.Row="0">
             <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="14" FontWeight="Bold">
             </TextBlock></WrapPanel>
-        <ItemsControl ItemsSource="{Binding Locations}"
-                      Grid.Row="1">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" 
-                                   Margin="5"></TextBlock>
-                        <Button Content="Switch"
-                                Command="{Binding SwitchToCommand}" 
-                                Margin="5"></Button>
-                        <Button Content="Open New"
-                                Command="{Binding OpenNewCommand}"
-                                Margin="5"></Button>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            <Grid Grid.Row="1"
+                    Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">Related Locations:</TextBlock>
+                <ItemsControl ItemsSource="{Binding Locations}"
+                              Grid.Row="1">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}"
+                                           Margin="0 5">
+                                </TextBlock>
+                                <Button Content="Switch"
+                                        Command="{Binding SwitchToCommand}"
+                                        Margin="5">
+                                </Button>
+                                <Button Content="Open New"
+                                        Command="{Binding OpenNewCommand}"
+                                        Margin="5">
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="2">
+                    <Button Foreground="Green"
+                            FontWeight="Bold"
+                            FontSize="14"
+                            ToolTip="Add a location"
+                            Command="{Binding AddLocationCommand}">+</Button>
+                </StackPanel>
+            </Grid>
+        
     </Grid>
 </UserControl>

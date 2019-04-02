@@ -8,5 +8,6 @@ namespace GameScreen.MongoDb
     {
         Task<LocationModel> GetLocationById(string locationId);
         Task<IEnumerable<LocationModel>> GetLocationsByParentId(string locationId, int pageSize, int pageIndex);
+        Task AddLocations(IEnumerable<LocationModel> locationModels);
     }
 }

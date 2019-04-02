@@ -1,0 +1,33 @@
+﻿<Window x:Class="GameScreen.Location.NewLocationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GameScreen.Location"
+        mc:Ignorable="d"
+        Title="NewLocationWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="0">
+            <Label>Name:</Label>
+            <TextBox Text="{Binding Name}"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1">
+            <Label>DM Map Url:</Label>
+            <TextBox Text="{Binding DmMapUrl}"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="2">
+            <Label>Player Map Url:</Label>
+            <TextBox Text="{Binding PlayerMapUrl}"></TextBox>
+        </StackPanel>
+        <Button Grid.Row="3" Command="{Binding SaveCommand}">Save</Button>
+    </Grid>
+</Window>

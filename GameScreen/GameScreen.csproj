@@ -141,6 +141,11 @@
     </Compile>
     <Compile Include="Location\LocationViewmodel.cs" />
     <Compile Include="Location\ContextLocationService.cs" />
+    <Compile Include="Location\NewLocationViewmodel.cs" />
+    <Compile Include="Location\NewLocationWindow.xaml.cs">
+      <DependentUpon>NewLocationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Location\NewRelatedLocationViewmodel.cs" />
     <Compile Include="MongoDb\IGameScreenContext.cs" />
     <Compile Include="MongoDb\MongoGameScreenContext.cs" />
     <Compile Include="Navigation\INavigationParam.cs" />
@@ -172,6 +177,10 @@
     <Compile Include="WpfCommand\NotifyTaskCompletion.cs" />
     <Compile Include="WpfCommand\RelayCommand.cs" />
     <Page Include="Location\LocationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\NewLocationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

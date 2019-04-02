@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Input;
 using GameScreen.Navigation;
 using GameScreen.Node;
+using GameScreen.NodeWindow;
 using GameScreen.Pageable;
 using GameScreen.Viewmodel;
 using Microsoft.Expression.Interactivity.Core;
@@ -18,9 +17,12 @@ namespace GameScreen.Location
         private readonly INodeNavigationService _nodeNavigationService;
         private readonly INavigationContext _navigationContext;
         private readonly LocationListItemViewmodel.Factory _locationListItemViewmodelFactory;
+        private readonly IWindowService _windowService;
+        private readonly NewLocationViewmodel.Factory _newLocationViewmodelFactory;
         private string _name;
         private string _id;
         public ICommand LoadedCommand { get; }
+        public ICommand AddLocationCommand { get; }
 
         /// <summary>
         /// Only for unit-testing
@@ -33,19 +35,32 @@ namespace GameScreen.Location
             INodeService nodeService,
             INodeNavigationService nodeNavigationService,
             INavigationContext navigationContext,
-            LocationListItemViewmodel.Factory locationListItemViewmodelFactory):this()
+            LocationListItemViewmodel.Factory locationListItemViewmodelFactory,
+            IWindowService windowService,
+            NewLocationViewmodel.Factory newLocationViewmodelFactory):this()
         {
             _location = location;
             _nodeService = nodeService;
             _nodeNavigationService = nodeNavigationService;
             _navigationContext = navigationContext;
             _locationListItemViewmodelFactory = locationListItemViewmodelFactory;
+            _windowService = windowService;
+            _newLocationViewmodelFactory = newLocationViewmodelFactory;
 
             _name = location.Name;
             _id = location.Id.ToString();
 
             LoadedCommand = new ActionCommand(OnLoaded);
             Locations = new PageableObservableCollection<LocationListItemViewmodel>();
+            AddLocationCommand = new ActionCommand(OnNewLocationClick);
+        }
+
+        private void OnNewLocationClick()
+        {
+            var popupContext = _windowService.GetNewLocationPopup();
+            var relatedLocationVm = new NewRelatedLocationViewmodel(Id, Name);
+            var nlvm = _newLocationViewmodelFactory(new[] {relatedLocationVm}, () => popupContext.Close());
+            _windowService.OpenNewLocationPopup(nlvm, popupContext);
         }
 
         public string Name
